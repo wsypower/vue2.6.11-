@@ -1,11 +1,11 @@
 <mxfile>
     <diagram id="7vVO6_0g2VPOfLbJnjWb" name="第 1 页">
-        <mxGraphModel dx="1146" dy="917" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="932" dy="632" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="2" value="&lt;font color=&quot;#000000&quot;&gt;new Vue()&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#e3c800;strokeColor=#B09500;fontColor=#ffffff;" vertex="1" parent="1">
-                    <mxGeometry x="90" y="60" width="80" height="80" as="geometry"/>
+                    <mxGeometry x="374" y="20" width="80" height="80" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

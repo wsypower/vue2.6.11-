@@ -17,6 +17,9 @@ export function initMixin(Vue: Class<Component>) {
     const vm: Component = this;
     // a uid
     // 实例唯一id
+    // 是一个全局共享的变量，并不在构造函数中
+    // 因此每次调用都会 + 1
+    // 这样可以确保每个组件的_uid 都不一样
     vm._uid = uid++;
 
     let startTag, endTag;
@@ -31,6 +34,10 @@ export function initMixin(Vue: Class<Component>) {
     // 内部标记，主要用于防止被当成普通对象来监听变化
     vm._isVue = true;
     // merge options 合并选项 参数
+    // 如果选项_isComponent 为 true，则说明组件是一个自定义组件
+    // 会调用 initInternalComponent 方法
+    // 会写入 parent / _parentVnode / propsData / _parentListeners / _renderChildren / _componentTag 属性
+    // 如果 render 选项存在，还会写入 render / staticRenderFns。
     if (options && options._isComponent) {
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
@@ -42,15 +49,17 @@ export function initMixin(Vue: Class<Component>) {
     } else {
       //合并参数 将两个对象合成一个对象 将父值对象和子值对象合并在一起
       //并且优先取值子值，如果没有则取子值
+
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
-        vm
+        vm // vm 实例本身的属性（也就是说包括上面的_uid 之类的都会合并进去）
       );
     }
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== "production") {
       //初始化 代理 监听
+      //实例的 Proxy 包装代理，当在开发环境访问不存在的属性时产生提示
       initProxy(vm);
     } else {
       vm._renderProxy = vm;
@@ -59,13 +68,16 @@ export function initMixin(Vue: Class<Component>) {
     vm._self = vm;
     initLifecycle(vm); //初始化生命周期 标志
     initEvents(vm); //初始化事件
-    initRender(vm); // 初始化渲染
+    initRender(vm); // 初始化渲染 Render
     callHook(vm, "beforeCreate"); //触发beforeCreate钩子函数
-    initInjections(vm); // 在数据/道具之前解决注入问题,初始化 inject
+    //初始化依赖注入 Injections
+    //在数据/道具之前解决注入问题,初始化 inject
+    initInjections(vm);
     // 响应话数据
     initState(vm);
     //解决后提供数据/道具  provide 选项应该是一个对象或返回一个对象的函数。
     //该对象包含可注入其子孙的属性，用于组件之间通信。
+    //初始化依赖注入 Provide
     initProvide(vm);
     //触发created钩子函数
     callHook(vm, "created");
